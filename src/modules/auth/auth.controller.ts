@@ -10,7 +10,12 @@ export class AuthController {
   }
 
   @Get()
-  ticket(): string {
-    return this.authService.ticket()
+  async login(): Promise<string> {
+    return await this.authService.login()
+  }
+
+  @Get('/token')
+  getToken(): string {
+    return 'your token'
   }
 }
