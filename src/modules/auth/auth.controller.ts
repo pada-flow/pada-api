@@ -1,11 +1,11 @@
 import { Controller, Get, Res, Req } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { Logging } from 'adal-node';
+import { Logging } from 'adal-node'
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ){
 
   }

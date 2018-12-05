@@ -5,13 +5,12 @@ import * as passport from 'passport'
 import { AuthenticationContext } from 'adal-node'
 import * as crypto from 'crypto'
 
-
 const sampleParameters = {
   tenant : process.env.MS_CREDS_TELNANT,
   authorityHostUrl : 'https://login.windows.net',
   clientId : process.env.MS_CREDS_CLIENT_ID,
   username : '',
-  password : ''
+  password : '',
 }
 // const authorityHostUrl = 'https://login.windows.net'
 // const authorityUrl = sampleParameters.authorityHostUrl + '/' + sampleParameters.tenant
@@ -24,7 +23,7 @@ export class AuthService {
   private users: any[] = []
 
   constructor() {
-    
+
   }
 
   private createAuthorityUrl(): string {
@@ -34,29 +33,29 @@ export class AuthService {
   private createAuthorizationUrl(state): string {
     const templateAuthzUrl = 'https://login.windows.net/' + process.env.MS_CREDS_TELNANT + '/oauth2/authorize?response_type=code&client_id=<client_id>&redirect_uri=<redirect_uri>&state=<state>&resource=<resource>'
     return templateAuthzUrl.replace('<client_id>', process.env.MS_CREDS_CLIENT_ID)
-      .replace('<redirect_uri>',redirectUri)
+      .replace('<redirect_uri>', redirectUri)
       .replace('<state>', state)
       .replace('<resource>', resource)
   }
 
   private authProcess(req): Promise<string> {
     const authenticationContext = new AuthenticationContext(
-      this.createAuthorityUrl()
+      this.createAuthorityUrl(),
     )
     return new Promise((resolve, reject) => {
       authenticationContext.acquireTokenWithAuthorizationCode(
         req.query.code, redirectUri, resource, process.env.MS_CREDS_CLIENT_ID, process.env.MS_CREDS_CLIENT_SECRET,
         (err, response: any) => {
-          var message = ''
+          let message = ''
           if (err) {
             message = 'error: ' + err.message + '\n'
           }
           message += 'response: ' + JSON.stringify(response)
-      
+
           if (err) {
             resolve(message)
           }
-      
+
           // Later, if the access token is expired it can be refreshed.
           authenticationContext.acquireTokenWithRefreshToken(
             response.refreshToken, sampleParameters.clientId, process.env.MS_CREDS_CLIENT_SECRET, resource,
@@ -65,11 +64,11 @@ export class AuthService {
                 message += 'refreshError: ' + refreshErr.message + '\n'
               }
               message += 'refreshResponse: ' + JSON.stringify(refreshResponse)
-        
+
               resolve(message)
-            }
+            },
           )
-        }
+        },
       )
     })
   }
@@ -78,10 +77,10 @@ export class AuthService {
     return ' this is your ticket'
   }
 
-  async login (res): Promise<any> {
+  async login(res): Promise<any> {
     crypto.randomBytes(48, (ex, buf) => {
-      var token = buf.toString('base64').replace(/\//g,'_').replace(/\+/g,'-')
-  
+      let token = buf.toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
+
       res.cookie('authstate', token)
       const authorizationUrl = this.createAuthorizationUrl(token)
 

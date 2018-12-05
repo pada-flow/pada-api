@@ -2,32 +2,32 @@ import { IOIDCStrategyOption } from 'passport-azure-ad'
 
 export const credsConf: IOIDCStrategyOption = {
   // Required
-  identityMetadata: 'https://login.microsoftonline.com/PadaCli.onmicrosoft.com/v2.0/.well-known/openid-configuration', 
+  identityMetadata: 'https://login.microsoftonline.com/PadaCli.onmicrosoft.com/v2.0/.well-known/openid-configuration',
   // or equivalently: 'https://login.microsoftonline.com/<tenant_guid>/v2.0/.well-known/openid-configuration'
   //
   // or you can use the common endpoint
   // 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration'
   // To use the common endpoint, you have to either turn `validateIssuer` off, or provide the `issuer` value.
 
-  // Required, the client ID of your app in AAD  
+  // Required, the client ID of your app in AAD
   clientID: '42a38f9c-d22f-4fec-a7a4-dbd041b8ec1f',
 
   // Required, must be 'code', 'code id_token', 'id_token code' or 'id_token'
-  // If you want to get access_token, you must use 'code', 'code id_token' or 'id_token code' 
-  responseType: 'code id_token', 
+  // If you want to get access_token, you must use 'code', 'code id_token' or 'id_token code'
+  responseType: 'code id_token',
 
   // Required
-  responseMode: 'form_post', 
+  responseMode: 'form_post',
 
   // Required, the reply URL registered in AAD for your app
-  redirectUrl: 'http://localhost:31544/auth/openid/return', 
+  redirectUrl: 'http://localhost:31544/auth/openid/return',
 
   // Required if we use http for redirectUrl
   allowHttpForRedirectUrl: true,
 
-  // Required if `responseType` is 'code', 'id_token code' or 'code id_token'. 
+  // Required if `responseType` is 'code', 'id_token code' or 'code id_token'.
   // If app key contains '\', replace it with '\\'.
-  clientSecret: 'yzmOxE170ZbB2yAvwHvZB7pP9yv1vjBZhThF/tiR9+Q=', 
+  clientSecret: 'yzmOxE170ZbB2yAvwHvZB7pP9yv1vjBZhThF/tiR9+Q=',
 
   // Required to set to false if you don't want to validate issuer
   validateIssuer: false,
@@ -47,9 +47,9 @@ export const credsConf: IOIDCStrategyOption = {
   // Required if `useCookieInsteadOfSession` is set to true. You can provide multiple set of key/iv pairs for key
   // rollover purpose. We always use the first set of key/iv pair to encrypt cookie, but we will try every set of
   // key/iv pair to decrypt cookie. Key can be any string of length 32, and iv can be any string of length 12.
-  cookieEncryptionKeys: [ 
-    { 'key': '12345678901234567890123456789012', 'iv': '123456789012' },
-    { 'key': 'abcdefghijklmnopqrstuvwxyzabcdef', 'iv': 'abcdefghijkl' }
+  cookieEncryptionKeys: [
+    { key: '12345678901234567890123456789012', iv: '123456789012' },
+    { key: 'abcdefghijklmnopqrstuvwxyzabcdef', iv: 'abcdefghijkl' },
   ],
 
   // The additional scopes we want besides 'openid'.
@@ -69,18 +69,18 @@ export const credsConf: IOIDCStrategyOption = {
 
   // Optional. The clock skew allowed in token validation, the default value is 300 seconds.
   clockSkew: null,
-};
+}
 
 // The url you need to go to destroy the session with AAD
-export const destroySessionUrl = 'https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=http://localhost:3000';
+export const destroySessionUrl = 'https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=http://localhost:3000'
 
 // If you want to use the mongoDB session store for session middleware, set to true; otherwise we will use the default
 // session store provided by express-session.
 // Note that the default session store is designed for development purpose only.
-export const useMongoDBSessionStore = false;
+export const useMongoDBSessionStore = false
 
 // If you want to use mongoDB, provide the uri here for the database.
-export const databaseUri = 'mongodb://localhost/OIDCStrategy';
+export const databaseUri = 'mongodb://localhost/OIDCStrategy'
 
 // How long you want to keep session in mongoDB.
-export const mongoDBSessionMaxAge = 24 * 60 * 60;  // 1 day (unit is second)
+export const mongoDBSessionMaxAge = 24 * 60 * 60  // 1 day (unit is second)
