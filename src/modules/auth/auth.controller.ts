@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Res, Req } from '@nestjs/common'
 import { AuthService } from './auth.service'
+import { Logging } from 'adal-node';
 
 @Controller('auth')
 export class AuthController {
@@ -10,12 +11,13 @@ export class AuthController {
   }
 
   @Get()
-  async login(): Promise<string> {
-    return await this.authService.login()
+  async login(@Res() res): Promise<string> {
+    return await this.authService.login(res)
   }
 
-  @Get('/token')
-  getToken(): string {
-    return 'your token'
+  @Get('openid/return')
+  async openIdReturn(@Req() req): Promise<string> {
+    return await this.authService.openIdReturn(req)
   }
+
 }

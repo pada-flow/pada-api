@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './modules/app.module'
 import { config } from 'dotenv'
 import * as passport from 'passport'
+import * as cookieParser from 'cookie-parser'
 
 import { invarant } from './middlewares/invarant.middleware'
 
@@ -11,7 +12,8 @@ async function bootstrap() {
   app.use(invarant)
   app.use(passport.initialize())
   app.use(passport.session())
-  await app.listen(3002)
+  app.use(cookieParser())
+  await app.listen(process.env.PORT)
 }
 
 bootstrap()
