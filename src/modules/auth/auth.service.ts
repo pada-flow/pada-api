@@ -92,6 +92,8 @@ export class AuthService {
     if (req.cookies.authstate !== req.query.state) {
       return 'error: state does not match'
     }
-    return await this.authProcess(req)
+    const result = await this.authProcess(req)
+    console.log('esult---', result)
+    return result
   }
 }
