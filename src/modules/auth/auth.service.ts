@@ -26,6 +26,17 @@ export class AuthService {
 
   }
 
+  private getTicket(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(48, (err, buf) => {
+        if (err) { throw new Error('err') }
+        resolve(
+          buf.toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
+        )
+      })
+    })
+  }
+
   private createAuthorityUrl(): string {
     return sampleParameters.authorityHostUrl + '/' + process.env.MS_CREDS_TELNANT
   }
@@ -74,18 +85,14 @@ export class AuthService {
   }
 
   async ticket(): Promise<string> {
-    return ' this is your ticket'
+    const ticket = await this.getTicket()
+    return ticket
   }
 
-  async login(res): Promise<any> {
-    crypto.randomBytes(48, (ex, buf) => {
-      let token = buf.toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
-
-      res.cookie('authstate', token)
-      const authorizationUrl = this.createAuthorizationUrl(token)
-
-      res.redirect(authorizationUrl)
-    })
+  async login(token, res): Promise<any> {
+    res.cookie('authstate', token)
+    const authorizationUrl = this.createAuthorizationUrl(token)
+    res.redirect(authorizationUrl)
   }
 
   async openIdReturn(req): Promise<any> {
@@ -93,7 +100,7 @@ export class AuthService {
       return 'error: state does not match'
     }
     const result = await this.authProcess(req)
-    console.log('esult---', result)
+    console.log('result---', result)
     return result
   }
 }

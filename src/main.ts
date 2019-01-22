@@ -9,11 +9,13 @@ import { invarant } from './middlewares/invarant.middleware'
 async function bootstrap() {
   config()
   const app = await NestFactory.create(AppModule)
-  app.use(invarant)
+  app.setGlobalPrefix('api')
+  // app.use(invarant)
   app.use(passport.initialize())
   app.use(passport.session())
   app.use(cookieParser())
   await app.listen(process.env.PORT)
+  console.log(`app listening on port ${process.env.PORT}`)
 }
 
 bootstrap()
