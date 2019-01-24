@@ -1,7 +1,7 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 
-import { AuthController } from './modules/auth/auth.controller'
-import { AuthService } from './modules/auth/auth.service'
+import { AuthModule } from './auth'
+
 import { EventsModule } from './modules/events/events.module'
 
 import { TaskController } from './modules/task/task.controller'
@@ -10,9 +10,8 @@ import { DepModule } from './deps'
 // import { Logger } from './deps/logger'
 
 @Module({
-  imports: [EventsModule, DepModule],
-  controllers: [AuthController, TaskController],
-  providers: [AuthService],
+  imports: [EventsModule, DepModule, AuthModule],
+  controllers: [TaskController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { OIDCStrategy } from 'passport-azure-ad'
-import { credsConf } from '../../config/creds'
+// import { credsConf } from '../../config/creds'
 import * as passport from 'passport'
 import { AuthenticationContext } from 'adal-node'
 import * as crypto from 'crypto'
+import * as os from 'os'
+
+import { store } from './authStore'
 
 const sampleParameters = {
   tenant : process.env.MS_CREDS_TELNANT,
@@ -14,7 +17,7 @@ const sampleParameters = {
 }
 // const authorityHostUrl = 'https://login.windows.net'
 // const authorityUrl = sampleParameters.authorityHostUrl + '/' + sampleParameters.tenant
-const redirectUri = 'http://localhost:31544/auth/openid/return'
+const redirectUri = 'http://localhost:31544/api/auth/openid/return'
 const resource = '00000002-0000-0000-c000-000000000000'
 const templateAuthzUrl = 'https://login.windows.net/' + sampleParameters.tenant + '/oauth2/authorize?response_type=code&client_id=<client_id>&redirect_uri=<redirect_uri>&state=<state>&resource=<resource>'
 
@@ -23,16 +26,15 @@ export class AuthService {
   private users: any[] = []
 
   constructor() {
-
   }
 
   private getTicket(): Promise<string> {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(48, (err, buf) => {
         if (err) { throw new Error('err') }
-        resolve(
-          buf.toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
-        )
+        const ticket = buf.toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
+        store.set(ticket, null)
+        resolve(ticket)
       })
     })
   }
@@ -100,7 +102,13 @@ export class AuthService {
       return 'error: state does not match'
     }
     const result = await this.authProcess(req)
+    // store.set(ticket, result)
     console.log('result---', result)
     return result
+  }
+
+  async status(): Promise<boolean> {
+    const accessToken = store.get('xx')
+    return !!accessToken
   }
 }

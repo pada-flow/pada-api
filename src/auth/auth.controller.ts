@@ -29,7 +29,7 @@ export class AuthController {
    * @returns {Promise<string>}
    * @memberof AuthController
    */
-  @Post('login')
+  @Get('login')
   async login(@Query() query, @Res() res): Promise<string> {
     const { token } = query
     return await this.authService.login(token, res)
@@ -45,6 +45,11 @@ export class AuthController {
   @Get('openid/return')
   async openIdReturn(@Req() req): Promise<string> {
     return await this.authService.openIdReturn(req)
+  }
+
+  @Post('status')
+  async status(@Req() req): Promise<boolean> {
+    return await this.authService.status()
   }
 
 }
