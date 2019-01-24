@@ -21,7 +21,9 @@
   "dependencies": {
     "@nestjs/common": "^5.4.0",
     "@nestjs/core": "^5.4.0",
+    "@nestjs/websockets": "^5.6.2",
     "adal-node": "^0.1.28",
+    "clf-date": "^0.1.0",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.1.0",
     "passport": "^0.4.0",
@@ -29,7 +31,9 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.2.2",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "winston": "^3.1.0",
+    "winston-daily-rotate-file": "^3.6.0"
   },
   "devDependencies": {
     "@nestjs/testing": "^5.1.0",
