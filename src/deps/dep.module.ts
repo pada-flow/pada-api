@@ -7,7 +7,7 @@ const depComponents = [
 
 @Global()
 @Module({
-  providers: depComponents,
+  imports: depComponents,
   exports: depComponents
 })
 export class DepModule implements NestModule {

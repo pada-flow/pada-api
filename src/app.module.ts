@@ -6,11 +6,11 @@ import { EventsModule } from './modules/events/events.module'
 
 import { TaskController } from './modules/task/task.controller'
 import { InvarantMiddleware } from './middlewares/invarant.middleware'
-// import { DepModule } from './deps'
-import { Logger } from './deps/logger'
+import { DepModule } from './deps'
+// import { Logger } from './deps/logger'
 
 @Module({
-  imports: [EventsModule, Logger],
+  imports: [EventsModule, DepModule],
   controllers: [AuthController, TaskController],
   providers: [AuthService],
 })
