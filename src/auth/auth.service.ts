@@ -86,9 +86,12 @@ export class AuthService {
     })
   }
 
-  async ticket(): Promise<string> {
-    const ticket = await this.getTicket()
-    return ticket
+  async ticket(userTicket: string): Promise<string> {
+    const accessToken = store.get(userTicket)
+    if (!accessToken) {
+      return await this.getTicket()
+    }
+    return userTicket
   }
 
   async login(token, res): Promise<any> {
@@ -97,18 +100,20 @@ export class AuthService {
     res.redirect(authorizationUrl)
   }
 
-  async openIdReturn(req): Promise<any> {
+  async openIdReturn(req, ticket): Promise<any> {
+    if (!ticket) {
+      return 'where is your ticket??'
+    }
     if (req.cookies.authstate !== req.query.state) {
       return 'error: state does not match'
     }
     const result = await this.authProcess(req)
-    // store.set(ticket, result)
-    console.log('result---', result)
+    store.set(ticket, result)
     return result
   }
 
-  async status(): Promise<boolean> {
-    const accessToken = store.get('xx')
+  async status(ticket): Promise<boolean> {
+    const accessToken = store.get(ticket)
     return !!accessToken
   }
 }

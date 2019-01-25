@@ -15,6 +15,10 @@ console.log('boot---', process.env.LOG_PATH)
 
   // ws
   app.useWebSocketAdapter(new WsAdapter(app.getHttpServer()))
+
+  // validation pipe
+  // app.useGlobalPipes(new ValidationPipe())
+
   await app.listen(process.env.PORT)
   console.log(`app listening on port ${process.env.PORT}`)
 }

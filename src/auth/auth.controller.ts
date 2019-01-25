@@ -1,6 +1,8 @@
-import { Controller, Get, Res, Req, Query, Post } from '@nestjs/common'
+import { Controller, Get, Res, Req, Query, Post, Body } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { Logging } from 'adal-node'
+
+import { TicketDto, OpenIdReturnDto } from './dto'
 
 @Controller('auth')
 export class AuthController {
@@ -18,8 +20,9 @@ export class AuthController {
    * @memberof AuthController
    */
   @Get('ticket')
-  async ticket(): Promise<string> {
-    return await this.authService.ticket()
+  async ticket(@Query() query: TicketDto): Promise<string> {
+    const { ticket } = query
+    return await this.authService.ticket(ticket)
   }
 
   /**
@@ -43,13 +46,15 @@ export class AuthController {
    * @memberof AuthController
    */
   @Get('openid/return')
-  async openIdReturn(@Req() req): Promise<string> {
-    return await this.authService.openIdReturn(req)
+  async openIdReturn(@Query() query: OpenIdReturnDto, @Req() req): Promise<string> {
+    const { state: ticket } = query
+    return await this.authService.openIdReturn(req, ticket)
   }
 
   @Post('status')
-  async status(@Req() req): Promise<boolean> {
-    return await this.authService.status()
+  async status(@Body() body: TicketDto): Promise<boolean> {
+    const { ticket } = body
+    return await this.authService.status(ticket)
   }
 
 }
