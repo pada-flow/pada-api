@@ -5,7 +5,6 @@ import { TaskModule } from './task'
 
 import { EventsModule } from './modules/events/events.module'
 
-import { InvarantMiddleware } from './middlewares/invarant.middleware'
 import { DepModule } from './deps'
 // import { Logger } from './deps/logger'
 
@@ -14,8 +13,5 @@ import { DepModule } from './deps'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(InvarantMiddleware)
-      .forRoutes('*')
   }
 }

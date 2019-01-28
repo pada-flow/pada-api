@@ -6,7 +6,7 @@ import { AuthenticationContext } from 'adal-node'
 import * as crypto from 'crypto'
 import * as os from 'os'
 
-import { store } from './authStore'
+import store from './authStore'
 
 const sampleParameters = {
   tenant : process.env.MS_CREDS_TELNANT,
@@ -19,13 +19,13 @@ const sampleParameters = {
 // const authorityUrl = sampleParameters.authorityHostUrl + '/' + sampleParameters.tenant
 const redirectUri = 'http://localhost:31544/api/auth/openid/return'
 const resource = '00000002-0000-0000-c000-000000000000'
-const templateAuthzUrl = 'https://login.windows.net/' + sampleParameters.tenant + '/oauth2/authorize?response_type=code&client_id=<client_id>&redirect_uri=<redirect_uri>&state=<state>&resource=<resource>'
 
 @Injectable()
 export class AuthService {
   private users: any[] = []
-
+  private templateAuthzUrl = ''
   constructor() {
+    this.templateAuthzUrl = 'https://login.windows.net/' + process.env.MS_CREDS_TELNANT + '/oauth2/authorize?response_type=code&client_id=<client_id>&redirect_uri=<redirect_uri>&state=<state>&resource=<resource>'
   }
 
   private getTicket(): Promise<string> {
@@ -44,8 +44,7 @@ export class AuthService {
   }
 
   private createAuthorizationUrl(state): string {
-    const templateAuthzUrl = 'https://login.windows.net/' + process.env.MS_CREDS_TELNANT + '/oauth2/authorize?response_type=code&client_id=<client_id>&redirect_uri=<redirect_uri>&state=<state>&resource=<resource>'
-    return templateAuthzUrl.replace('<client_id>', process.env.MS_CREDS_CLIENT_ID)
+    return this.templateAuthzUrl.replace('<client_id>', process.env.MS_CREDS_CLIENT_ID)
       .replace('<redirect_uri>', redirectUri)
       .replace('<state>', state)
       .replace('<resource>', resource)
@@ -112,8 +111,8 @@ export class AuthService {
     return result
   }
 
-  async status(ticket): Promise<boolean> {
+  async status(ticket: string): Promise<boolean> {
     const accessToken = store.get(ticket)
-    return !!accessToken
+    return accessToken || null
   }
 }

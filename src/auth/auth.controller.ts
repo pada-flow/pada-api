@@ -2,7 +2,7 @@ import { Controller, Get, Res, Req, Query, Post, Body } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { Logging } from 'adal-node'
 
-import { TicketDto, OpenIdReturnDto } from './dto'
+import { TicketDto, OpenIdReturnDto, TokenDto } from './dto'
 
 @Controller('auth')
 export class AuthController {

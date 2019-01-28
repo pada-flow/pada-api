@@ -2,6 +2,7 @@ import { Logger, Injectable } from '@nestjs/common'
 import * as clfDate from 'clf-date'
 import { Logger as WinstonLogger, createLogger, format, transports } from 'winston'
 import * as DailyRotateFile from 'winston-daily-rotate-file'
+import { ContextService } from '../context'
 
 // import clfDate from 'clf-date';
 
@@ -9,23 +10,25 @@ import * as DailyRotateFile from 'winston-daily-rotate-file'
 // import { Env } from '../env';
 const { combine, timestamp, label, printf, prettyPrint } = format
 
-const myFormat = printf((info) => {
-  return `[${info.label}] ${process.pid}  - ${clfDate()}  ${info.level}: ${info.message}`
-})
-
 // export default logger
 @Injectable()
 export class PadaLogger extends Logger {
   private winston: WinstonLogger
 
-  constructor() {
+  constructor(
+    private ctx: ContextService
+  ) {
     super()
+    // const traceId = this.ctx.traceId
     this.winston = createLogger({
       format: combine(
         format.colorize({ all: true }),
         label({ label: 'PADA' }),
         timestamp(),
-        myFormat,
+        prettyPrint(),
+        printf((info) => {
+          return `[${info.label}] ${process.pid}  - ${clfDate()}  ${info.level}: ${info.message} traceId=${info.traceId}`
+        }),
       ),
       transports: [
         new transports.Console(),
@@ -41,9 +44,10 @@ export class PadaLogger extends Logger {
   }
 
   error(message: string, trace?: string, context?: string) {
-    this.winston.log({
+    this.winston.error({
       level: 'error',
-      message
+      message,
+      traceId: this.ctx.traceId
     })
   }
 
@@ -51,17 +55,23 @@ export class PadaLogger extends Logger {
     this.winston.log({
       level: 'warn',
       message,
+      traceId: this.ctx.traceId
     })
   }
 
   warn(message: string) {
-    this.winston.log({level: 'warn', message})
+    this.winston.warn({
+      level: 'warn',
+      message,
+      traceId: this.ctx.traceId
+    })
   }
 
   info(message: string) {
-    this.winston.log({
+    this.winston.info({
       level: 'info',
-      message
+      message,
+      traceId: this.ctx.traceId
     })
   }
 

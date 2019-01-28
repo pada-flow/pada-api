@@ -1,1 +1,2 @@
-export const store = new Map()
+const store = new Map()
+export default store

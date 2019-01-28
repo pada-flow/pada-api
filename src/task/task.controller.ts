@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { TaskService } from './task.service';
+import { Controller, Get, Headers } from '@nestjs/common'
+import { TaskService } from './task.service'
 
 @Controller('task')
 export class TaskController {
@@ -8,7 +8,8 @@ export class TaskController {
   ){}
 
    @Get('list')
-   async task(): Promise<any> {
-    return await this.taskService.list()
+   async task(@Headers() header): Promise<any> {
+    const ticket = header['pada-ticket']
+    return await this.taskService.list(ticket)
   }
 }
