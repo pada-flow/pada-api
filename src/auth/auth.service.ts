@@ -60,26 +60,28 @@ export class AuthService {
         (err, response: any) => {
           let message = ''
           if (err) {
-            message = 'error: ' + err.message + '\n'
+            throw new Error(err.message)
           }
-          message += 'response: ' + JSON.stringify(response)
+          console.log('response---', response)
+          resolve(response)
+          // message += 'response: ' + JSON.stringify(response)
 
-          if (err) {
-            resolve(message)
-          }
+          // if (err) {
+          //   resolve(message)
+          // }
 
-          // Later, if the access token is expired it can be refreshed.
-          authenticationContext.acquireTokenWithRefreshToken(
-            response.refreshToken, sampleParameters.clientId, process.env.MS_CREDS_CLIENT_SECRET, resource,
-            (refreshErr, refreshResponse) => {
-              if (refreshErr) {
-                message += 'refreshError: ' + refreshErr.message + '\n'
-              }
-              message += 'refreshResponse: ' + JSON.stringify(refreshResponse)
+          // // Later, if the access token is expired it can be refreshed.
+          // authenticationContext.acquireTokenWithRefreshToken(
+          //   response.refreshToken, sampleParameters.clientId, process.env.MS_CREDS_CLIENT_SECRET, resource,
+          //   (refreshErr, refreshResponse) => {
+          //     if (refreshErr) {
+          //       throw new Error('refreshError: ' + refreshErr.message)
+          //     }
+          //     message += 'refreshResponse: ' + JSON.stringify(refreshResponse)
 
-              resolve(message)
-            },
-          )
+          //     resolve(message)
+          //   },
+          // )
         },
       )
     })

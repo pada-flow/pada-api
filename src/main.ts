@@ -5,6 +5,8 @@ import { config } from 'dotenv'
 import * as passport from 'passport'
 import * as cookieParser from 'cookie-parser'
 
+import { HttpExceptionFilter, AnyExceptionFilter } from './deps'
+
 async function bootstrap() {
 console.log('boot---', process.env.LOG_PATH)
   const app = await NestFactory.create(AppModule)
@@ -16,6 +18,9 @@ console.log('boot---', process.env.LOG_PATH)
   // ws
   app.useWebSocketAdapter(new WsAdapter(app.getHttpServer()))
 
+  // filter
+  app.useGlobalFilters(new HttpExceptionFilter())
+  app.useGlobalFilters(new AnyExceptionFilter())
   // validation pipe
   // app.useGlobalPipes(new ValidationPipe())
 
