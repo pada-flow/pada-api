@@ -43,7 +43,7 @@ export class PadaLogger extends Logger {
     })
   }
 
-  error(message: string, trace?: string, context?: string) {
+  error(message: string | object, trace?: string, context?: string) {
     this.winston.error({
       level: 'error',
       message,
@@ -59,7 +59,7 @@ export class PadaLogger extends Logger {
     })
   }
 
-  warn(message: string) {
+  warn(message: string | object) {
     this.winston.warn({
       level: 'warn',
       message,
@@ -67,7 +67,7 @@ export class PadaLogger extends Logger {
     })
   }
 
-  info(message: string) {
+  info(message: string | object) {
     this.winston.info({
       level: 'info',
       message,

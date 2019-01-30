@@ -28,4 +28,12 @@ export class ContextService {
   public get traceId() {
     return this.store.get(ContextTypes.TRACE_ID)
   }
+
+  public set requestStartTime(time: number) {
+    this.store.set(ContextTypes.REQUEST_TIMER, time)
+  }
+  public get requestStartTime() {
+    return this.store.get(ContextTypes.REQUEST_TIMER)
+  }
+
 }

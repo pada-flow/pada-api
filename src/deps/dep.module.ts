@@ -4,6 +4,7 @@ import { Logger } from './logger'
 import { ContextMiddleware, ContextModule } from './context'
 import { InvarantMiddleware } from '../middlewares/invarant.middleware'
 import { HttpExceptionFilter, AnyExceptionFilter, InternalErrorFilter } from './exception'
+import { HttpModule } from './http'
 
 const depComponents = [
   ContextModule,
@@ -11,6 +12,7 @@ const depComponents = [
   HttpExceptionFilter,
   // AnyExceptionFilter,
   InternalErrorFilter,
+  HttpModule
 ]
 
 @Global()

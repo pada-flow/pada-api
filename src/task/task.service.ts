@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, HttpException } from '@nestjs/common'
 import axios from 'axios'
 import { stringify } from 'qs'
-import { PadaLogger } from '../deps/logger'
+import { PadaLogger, HttpService } from '../deps'
 
 import store from '../auth/authStore'
 import { type } from 'os'
@@ -9,14 +9,15 @@ import { type } from 'os'
 @Injectable()
 export class TaskService {
   constructor(
-    private readonly logger: PadaLogger
+    private readonly logger: PadaLogger,
+    private readonly httpService: HttpService
   ) {}
 
   private appendAccessToken(ticket) {
     const accessToken = store.get(ticket)
     console.log('sccessToken---', accessToken, typeof accessToken)
     if (!accessToken) {
-      throw new Error('You have invalid ticket')
+      throw new HttpException('You have invalid ticket', 400)
     }
     return {
       headers: {
@@ -31,12 +32,7 @@ export class TaskService {
     const oauth = this.appendAccessToken(ticket)
     let result: any
     this.logger.info(`query task list from ms api`)
-    // try {
-      result = await axios.post('https://outlook.office.com/api/v2.0/me/tasks', {}, oauth)
-    // } catch (e) {
-      // console.log('e---', e)
-      // console.log('------', e.response.data)
-    // }
+    result = await this.httpService.post('https://outlook.office.com/api/v2.0/me/tasks', {}, oauth)
     return result
   }
 }

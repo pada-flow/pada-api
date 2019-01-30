@@ -17,7 +17,7 @@ export class InternalErrorFilter implements ExceptionFilter {
     const { error, message } = exception.getResponse() as any
 
     this.logger.error(error.message)
-
+    
     response.status(statusCode).json({
       message,
       statusCode,
