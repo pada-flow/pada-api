@@ -10,7 +10,7 @@ import store from './authStore'
 
 const sampleParameters = {
   tenant : process.env.MS_CREDS_TELNANT,
-  authorityHostUrl : 'https://login.windows.net',
+  authorityHostUrl : 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
   clientId : process.env.MS_CREDS_CLIENT_ID,
   username : '',
   password : '',
@@ -25,7 +25,7 @@ export class AuthService {
   private users: any[] = []
   private templateAuthzUrl = ''
   constructor() {
-    this.templateAuthzUrl = 'https://login.windows.net/' + process.env.MS_CREDS_TELNANT + '/oauth2/authorize?response_type=code&client_id=<client_id>&redirect_uri=<redirect_uri>&state=<state>&resource=<resource>'
+    this.templateAuthzUrl = 'https://login.microsoftonline.com/' + process.env.MS_CREDS_TELNANT + '/oauth2/authorize?response_type=code&client_id=<client_id>&redirect_uri=<redirect_uri>&state=<state>&resource=<resource>'
   }
 
   private getTicket(): Promise<string> {
