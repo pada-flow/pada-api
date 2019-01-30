@@ -1,11 +1,16 @@
-import { Module, NestModule, MiddlewareConsumer, Global } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, Global } from '@nestjs/common'
+
 import { Logger } from './logger'
 import { ContextMiddleware, ContextModule } from './context'
 import { InvarantMiddleware } from '../middlewares/invarant.middleware'
+import { HttpExceptionFilter, AnyExceptionFilter, InternalErrorFilter } from './exception'
 
 const depComponents = [
   ContextModule,
   Logger,
+  HttpExceptionFilter,
+  // AnyExceptionFilter,
+  InternalErrorFilter,
 ]
 
 @Global()
