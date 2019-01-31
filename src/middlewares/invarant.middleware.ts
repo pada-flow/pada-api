@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware, MiddlewareFunction, Logger } from '@nestjs/common'
-import { PadaLogger } from '../deps/logger'
+import { PadaLogger } from '../common'
 
 @Injectable()
 export class InvarantMiddleware implements NestMiddleware {

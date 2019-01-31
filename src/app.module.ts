@@ -5,7 +5,7 @@ import { TaskModule } from './task'
 
 import { EventsModule } from './modules/events/events.module'
 
-import { DepModule } from './deps'
+import { DepModule } from './common'
 // import { Logger } from './deps/logger'
 
 @Module({

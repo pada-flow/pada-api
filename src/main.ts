@@ -5,8 +5,7 @@ import { config } from 'dotenv'
 import * as passport from 'passport'
 import * as cookieParser from 'cookie-parser'
 
-import { DepModule } from './deps'
-import { HttpExceptionFilter, AnyExceptionFilter, InternalErrorFilter } from './deps'
+import { DepModule, HttpExceptionFilter, InternalErrorFilter } from './common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

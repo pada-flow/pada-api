@@ -1,7 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common'
 import axios from 'axios'
 import { stringify } from 'qs'
-import { PadaLogger, HttpService } from '../deps'
+import { PadaLogger, HttpService } from '../common'
 
 import store from '../auth/authStore'
 import { type } from 'os'
